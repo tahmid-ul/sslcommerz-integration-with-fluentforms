@@ -79,7 +79,6 @@ class API
 
     protected function handleIpn($data)
     {
-
         $submissionId = intval(ArrayHelper::get($data, 'fluentform_payment'));
 
         if (!$submissionId || empty($data['tran_id'])) {
@@ -89,8 +88,6 @@ class API
         if (!$submission) {
             return;
         }
-
-        //var_dump($data);
 
         $validationArgs = array(
             'val_id' => $data['val_id'],
@@ -118,12 +115,6 @@ class API
         }
 
         do_action('fluentform_ipn_sslcommerz_action_'.$status, $submission, $validateTransaction, $data);
-
-        //$refundedAmount = $refundAmount = ArrayHelper::get($validateTransaction, 'amountRefunded.value');
-        //if(intval($refundedAmount)) {
-            //$refundAmount = intval($refundAmount * 100); // in cents
-            //do_action('fluentform_ipn_sslcommerz_action_refunded', $refundAmount, $submission, $validateTransaction, $data);
-        //}
 
     }
 

@@ -16,7 +16,7 @@ class SSLCOMMERZSettings {
         $defaults = [
             'is_active' => 'no',
             'payment_mode' => 'test',
-            'checkout_type' => 'modal',
+            'checkout_type' => 'hosted',
             'store_id' => '',
             'store_password' => '',
             'notifications' => []
