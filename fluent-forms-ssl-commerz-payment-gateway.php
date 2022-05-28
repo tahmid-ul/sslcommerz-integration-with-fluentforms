@@ -1,11 +1,12 @@
 <?php
 /**
- * Plugin Name: Fluent Forms SSLCommerz Integration
- * Plugin URI:  #
- * Description: Connect Fluent Forms with SSLCommerz.
- * Author: Tahmid ul Karim [WPManageNinja - Support]
- * Author URI:  https://profiles.wordpress.org/tahmidulkarim/
+ * Plugin Name: SSLCOMMERZ Integration with Fluent Forms
+ * Plugin URI: https://github.com/tahmid-ul/sslcommerz-integration-with-fluentforms
+ * Description: Connect Fluent Forms with SSLCOMMERZ paymeent gateway.
  * Version: 1.0.0
+ * Author: Tahmid ul Karim
+ * Author URI:  https://profiles.wordpress.org/tahmidulkarim/
+ * License:           GPL v2 or later
  * Text Domain: SSLCOMMERZ
  */
 
