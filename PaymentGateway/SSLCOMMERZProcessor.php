@@ -34,7 +34,7 @@ class SSLCOMMERZProcessor extends BaseProcessor
 
         add_filter('fluentform_submitted_payment_items_' . $this->method, [$this, 'validateSubmittedItems'], 10, 4);
 
-        add_action('fluentform_rendering_payment_method_' . $this->method, array($this, 'addCheckoutJs'), 10, 3);
+        //add_action('fluentform_rendering_payment_method_' . $this->method, array($this, 'addCheckoutJs'), 10, 3);
 
 
 
@@ -69,8 +69,6 @@ class SSLCOMMERZProcessor extends BaseProcessor
 
     public function handleRedirect($transaction, $submission, $form, $methodSettings)
     {
-        //$globalSettings = SSLCOMMERZSettings::getSettings();
-
         $successUrl = add_query_arg(array(
             'fluentform_payment' => $submission->id,
             'payment_method'     => $this->method,
@@ -127,6 +125,7 @@ class SSLCOMMERZProcessor extends BaseProcessor
 	    $paymentArgs = wp_parse_args($paymentArgs, $this->getCustomerAddress($submission, $form));
 
         $paymentArgs = apply_filters('fluentform_sslcommerz_payment_args', $paymentArgs, $submission, $transaction, $form);
+
         // Initiate Payment
         $paymentIntent = (new API())->makeApiCall($paymentArgs, $form->id, 'POST');
 
@@ -162,13 +161,12 @@ class SSLCOMMERZProcessor extends BaseProcessor
             'nextAction'   => 'payment',
             'actionName'   => 'normalRedirect',
             'redirect_url' => $paymentIntent['GatewayPageURL'],
-            'message'      => __('You are redirecting to sslcommerz.com to complete the purchase. Please wait while you are redirecting....', 'fluentformpro'),
+            'message'      => __('You are redirecting to sslcommerz.com to complete the purchase. Please wait while you are redirecting....', 'SSLCOMMERZ'),
             'result'       => [
                 'insert_id' => $submission->id
             ]
         ], 200);
     }
-
 
 	private function getCustomerAddress($submission, $form)
 	{
@@ -238,11 +236,11 @@ class SSLCOMMERZProcessor extends BaseProcessor
             $returnData = $this->handlePaid($submission, $transaction);
         } else if ($type == 'success') {
             $transaction = $this->getLastTransaction($submission->id);
-            $message = __('Looks like the payment is not marked as paid yet. Please reload this page after 1-2 minutes.', 'fluentformpro');
+            $message = __('Looks like the payment is not marked as paid yet. Please reload this page after 1-2 minutes.', 'SSLCOMMERZ');
 
             $returnData = [
                 'insert_id' => $submission->id,
-                'title'     => __('Payment was not marked as Paid', 'fluentformpro'),
+                'title'     => __('Payment was not marked as Paid', 'SSLCOMMERZ'),
                 'result'    => false,
                 'error'     => $message
             ];
@@ -250,17 +248,17 @@ class SSLCOMMERZProcessor extends BaseProcessor
 	        $this->changeSubmissionPaymentStatus('failed');
 	        $returnData = [
 		        'insert_id' => $submission->id,
-		        'title'     => __('Payment Failed', 'fluentformpro'),
+		        'title'     => __('Payment Failed', 'SSLCOMMERZ'),
 		        'result'    => false,
-		        'error'     => __('Looks like the payment failed to process', 'fluentformpro')
+		        'error'     => __('Looks like the payment failed to process', 'SSLCOMMERZ')
 	        ];
         } else {
 	        $this->changeSubmissionPaymentStatus('cancelled');
 	        $returnData = [
 		        'insert_id' => $submission->id,
-		        'title'     => __('Payment Cancelled', 'fluentformpro'),
+		        'title'     => __('Payment Cancelled', 'SSLCOMMERZ'),
 		        'result'    => false,
-		        'error'     => __('Looks like you have cancelled the payment', 'fluentformpro')
+		        'error'     => __('Looks like you have cancelled the payment', 'SSLCOMMERZ')
 	        ];
         }
 
@@ -270,12 +268,10 @@ class SSLCOMMERZProcessor extends BaseProcessor
         $this->showPaymentView($returnData);
 
     }
-    
 
     public function handlePaid($submission, $transaction)
     {
         $this->setSubmissionId($submission->id);
-        //$transaction = $this->getLastTransaction($submission->id);
 
         if (!$transaction || $transaction->payment_method != $this->method) {
             return;
@@ -308,26 +304,16 @@ class SSLCOMMERZProcessor extends BaseProcessor
 
     public function handleRefund($refundAmount, $submission, $vendorTransaction)
     {
-
+		// Refund process will be added in future
     }
 
     public function validateSubmittedItems($paymentItems, $form, $formData, $subscriptionItems)
     {
         if (count($subscriptionItems)) {
             wp_send_json([
-                'errors' => __('SSLCommerz Error: SSLCommerz does not support subscriptions right now!', 'fluentformpro')
+                'errors' => __('SSLCommerz Error: SSLCommerz does not support subscriptions right now!', 'SSLCOMMERZ')
             ], 423);
         }
-    }
-
-    public function addCheckoutJs($methodElement, $element, $form)
-    {
-	    $settings = SSLCOMMERZSettings::getSettings();
-	    if($settings['checkout_type'] != 'modal') {
-		    return;
-	    }
-
-	    wp_enqueue_script('ff_sslcommerz_handler', FFSSLCOMMERZ_URL . 'js/sslcommerz_handler.js', ['jquery'], FLUENTFORMPRO_VERSION);
     }
 
     public function maybeShowModal($transaction, $submission, $form, $methodSettings)
@@ -356,8 +342,6 @@ class SSLCOMMERZProcessor extends BaseProcessor
 	    //Initiate Payment
 	    $order = (new API())->makeApiCall($orderArgs, $form->id, 'POST');
 
-	    //dd($order);
-
 	    if (is_wp_error($order)) {
 		    $message = $order->get_error_message();
 		    do_action('ff_log_data', [
@@ -378,14 +362,8 @@ class SSLCOMMERZProcessor extends BaseProcessor
 		    ], 423);
 	    }
 
-//	    $this->updateTransaction($transaction->id, [
-//		    'charge_id' => $order['id']
-//	    ]);
-
 	    $keys = SSLCOMMERZSettings::getApiKey($form->id);
 	    $paymentSettings = PaymentHelper::getPaymentSettings();
-
-	    //dd($paymentSettings);
 
 	    $modalData = [
 		    'amount'       => intval($transaction->payment_total),
@@ -394,7 +372,7 @@ class SSLCOMMERZProcessor extends BaseProcessor
 		    'reference_id' => $transaction->transaction_hash,
 		    'order_id'     => $order['sessionkey'],
 		    'name'         => $paymentSettings['business_name'],
-		    //'key'          => $keys['store_id'],
+		    'key'          => $keys['store_id'],
 		    'prefill'      => [
 			    'email' => PaymentHelper::getCustomerEmail($submission)
 		    ],
@@ -402,8 +380,6 @@ class SSLCOMMERZProcessor extends BaseProcessor
 			    'color' => '#3399cc'
 		    ]
 	    ];
-
-	    //dd($order);
 
 	    do_action('ff_log_data', [
 		    'parent_source_id' => $submission->form_id,
@@ -422,8 +398,8 @@ class SSLCOMMERZProcessor extends BaseProcessor
 		    'submission_id'    => $submission->id,
 		    'postdata'       => $modalData,
 		    'transaction_hash' => $transaction->transaction_hash,
-		    'message'          => __('Payment Modal is opening, Please complete the payment', 'fluentformpro'),
-		    'confirming_text'  => __('Confirming Payment, Please wait...', 'fluentformpro'),
+		    'message'          => __('Payment Modal is opening, Please complete the payment', 'SSLCOMMERZ'),
+		    'confirming_text'  => __('Confirming Payment, Please wait...', 'SSLCOMMERZ'),
 		    'result'           => [
 			    'insert_id' => $submission->id
 		    ],
@@ -434,28 +410,5 @@ class SSLCOMMERZProcessor extends BaseProcessor
 
     }
 
-    public function customModalParameters($item, $form)
-    {
-	    $settings = SSLCOMMERZSettings::getSettings();
-	    if($settings['checkout_type'] != 'modal') {
-		    return;
-	    }
-
-	    $website_url = site_url('/');
-
-	    $item['attributes']['id'] = "sslczPayBtn";
-	    $item['attributes']['token']=$order;
-	    $item['attributes']['postdata']="";
-	    $item['attributes']['order']=$order;
-	    $item['attributes']['endpoint']= $website_url. "easyCheckout.php?v4checkout";
-	    //array_push($item['attributes'], 'id');
-    	//dd($item['attributes']);
-	    //dd($item);
-    }
-
-    public function confirmModalPayment()
-    {
-
-    }
 
 }

@@ -42,7 +42,7 @@ class SSLCOMMERZHandler extends BasePaymentMethod
     public function pushPaymentMethodToForm($methods)
     {
         $methods[$this->key] = [
-            'title' => __('SSLCOMMERZ', 'fluentformpro'),
+            'title' => __('SSLCOMMERZ', 'SSLCOMMERZ'),
             'enabled' => 'yes',
             'method_value' => $this->key,
             'settings' => [
@@ -66,27 +66,18 @@ class SSLCOMMERZHandler extends BasePaymentMethod
 
         $mode = ArrayHelper::get($settings, 'payment_mode');
         if(!$mode) {
-            $errors['payment_mode'] = __('Please select Payment Mode', 'fluentformpro');
+            $errors['payment_mode'] = __('Please select Payment Mode', 'SSLCOMMERZ');
         }
 
         if(!ArrayHelper::get($settings, 'store_id')) {
-            $errors['sslcommerz_store_id'] = __('Please provide store id', 'fluentformpro');
+            $errors['sslcommerz_store_id'] = __('Please provide store id', 'SSLCOMMERZ');
         }
 
         if(!ArrayHelper::get($settings, 'store_password')) {
-            $errors['sslcommerz_store_password'] = __('Please provide store password', 'fluentformpro');
+            $errors['sslcommerz_store_password'] = __('Please provide store password', 'SSLCOMMERZ');
         }
 
         return $errors;
-    }
-
-    public function modifyTransaction($transaction)
-    {
-        /*if ($transaction->charge_id) {
-            $transaction->action_url =  'https://dashboard.razorpay.com/app/payments/'.$transaction->charge_id;
-        }*/
-
-        return $transaction;
     }
 
     public function isEnabled()
@@ -124,7 +115,7 @@ class SSLCOMMERZHandler extends BasePaymentMethod
                     'label' => 'Checkout Style Type',
                     'options' => [
                         'modal' => 'Modal Checkout Style',
-                        'hosted' => 'Hosted to sslcommerz'
+                        'hosted' => 'Hosted to SSLCOMMERZ'
                     ],
                     'info_help' => 'Select which type of checkout style you want.',
                     'check_status' => 'yes'
