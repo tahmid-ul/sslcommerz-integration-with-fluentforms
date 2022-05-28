@@ -130,8 +130,6 @@ class API
         $paymentData = wp_parse_args($args, $storeCredentials);
 
         $api_url = SSLCOMMERZSettings::getSSLCommerzEndpoint();
-        // For Sandbox - "https://sandbox.sslcommerz.com"
-        // For Live - "https://securepay.sslcommerz.com"
         
         if($method == 'POST') {
             $response = wp_remote_post($api_url . '/gwprocess/v4/api.php', [
@@ -155,7 +153,7 @@ class API
         if($responseData['status'] == 'FAILED') {
             $message = ArrayHelper::get($responseData, 'failedreason');
             if(!$message) {
-                $message = 'Unknown SSLCommerz API request error';
+                $message = __('Unknown SSLCommerz API request error', 'SSLCOMMERZ');
             }
 
             return new \WP_Error(423, $message, $responseData);

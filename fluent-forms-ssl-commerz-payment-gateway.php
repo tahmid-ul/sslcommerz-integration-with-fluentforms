@@ -2,11 +2,11 @@
 /**
  * Plugin Name: SSLCOMMERZ Integration with Fluent Forms
  * Plugin URI: https://github.com/tahmid-ul/sslcommerz-integration-with-fluentforms
- * Description: Connect Fluent Forms with SSLCOMMERZ paymeent gateway.
+ * Description: Connect Fluent Forms with SSLCOMMERZ payment gateway.
  * Version: 1.0.0
  * Author: Tahmid ul Karim
- * Author URI:  https://profiles.wordpress.org/tahmidulkarim/
- * License:           GPL v2 or later
+ * Author URI: https://profiles.wordpress.org/tahmidulkarim/
+ * License: GPL v2 or later
  * Text Domain: SSLCOMMERZ
  */
 
@@ -69,13 +69,15 @@ class FluentFormSSLCOMMERZ {
 
             $class = 'notice notice-error';
 
-            $install_url_text = 'Click Here to Get the Plugin';
+            $install_url_text = __('Click Here to Get the Plugin', 'SSLCOMMERZ');
 
             if ($pluginInfo->action == 'activate') {
-                $install_url_text = 'Click Here to Activate the Plugin';
+                $install_url_text = __('Click Here to Activate the Plugin', 'SSLCOMMERZ');
             }
 
-            $message = 'FluentForm SSLCOMMERZ Add-On Requires FluentForm Pro Plugin, <b><a href="' . $pluginInfo->url
+            $message_text = __('FluentForm SSLCOMMERZ Add-On Requires FluentForm Pro Plugin', 'SSLCOMMERZ');
+
+            $message = $message_text . ', <b><a href="' . $pluginInfo->url
                     . '">' . $install_url_text . '</a></b>';
 
             printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);

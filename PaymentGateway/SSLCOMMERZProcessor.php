@@ -55,7 +55,7 @@ class SSLCOMMERZProcessor extends BaseProcessor
         $transactionId = $this->insertTransaction([
             'transaction_type' => 'onetime',
             'transaction_hash' => $uniqueHash,
-            'payment_total'    => $this->getAmountTotal(),
+            'payment_total'    => $this->getAmountTotal()/100,
             'status'           => 'pending',
             'currency'         => PaymentHelper::getFormCurrency($form->id),
             'payment_mode'     => $this->getPaymentMode()
@@ -324,7 +324,7 @@ class SSLCOMMERZProcessor extends BaseProcessor
 	    }
 
 	    $orderArgs = [
-		    'total_amount' => intval($transaction->payment_total),
+		    'total_amount' => intval(($transaction->payment_total)/100),
 		    'currency' => strtoupper($transaction->currency),
 		    'tran_id' => $transaction->transaction_hash,
 		    'cus_name'=> $transaction->payer_name,

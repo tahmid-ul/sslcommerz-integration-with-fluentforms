@@ -96,17 +96,17 @@ class SSLCOMMERZHandler extends BasePaymentMethod
                     'settings_key' => 'is_active',
                     'type' => 'yes-no-checkbox',
                     'label' => 'Status',
-                    'checkbox_label' => 'Enable SSLCOMMERZ Payment Method'
+                    'checkbox_label' => __('Enable SSLCOMMERZ Payment Method', 'SSLCOMMERZ')
                 ],
                 [
                     'settings_key' => 'payment_mode',
                     'type' => 'input-radio',
                     'label' => 'Payment Mode',
                     'options' => [
-                        'test' => 'Sandbox Mode',
-                        'live' => 'Live Mode'
+                        'test' => __('Sandbox Mode', 'SSLCOMMERZ'),
+                        'live' => __('Live Mode', 'SSLCOMMERZ')
                     ],
-                    'info_help' => 'Select the payment mode. for testing purposes you should select Sandbox Mode otherwise select Live mode.',
+                    'info_help' => __('Select the payment mode. for testing purposes you should select Sandbox Mode otherwise select Live mode.', 'SSLCOMMERZ'),
                     'check_status' => 'yes'
                 ],
                 [
@@ -114,32 +114,32 @@ class SSLCOMMERZHandler extends BasePaymentMethod
                     'type' => 'input-radio',
                     'label' => 'Checkout Style Type',
                     'options' => [
-                        'modal' => 'Modal Checkout Style',
-                        'hosted' => 'Hosted to SSLCOMMERZ'
+                        'modal' => __('Modal Checkout Style', 'SSLCOMMERZ'),
+                        'hosted' => __('Hosted to SSLCOMMERZ', 'SSLCOMMERZ')
                     ],
-                    'info_help' => 'Select which type of checkout style you want.',
+                    'info_help' => __('Select which type of checkout style you want.', 'SSLCOMMERZ'),
                     'check_status' => 'yes'
                 ],
                 [
                     'type' => 'html',
-                    'html' => '<h2>Your SSLCommerz Credentials</h2>'
+                    'html' => __('<h2>Your SSLCommerz Credentials</h2>', 'SSLCOMMERZ')
                 ],
                 [
                     'settings_key' => 'store_id',
                     'type' => 'input-text',
                     'data_type' => 'text',
-                    'placeholder' => 'Store Id',
-                    'label' => 'Store Id',
-                    'inline_help' => 'Provide your SSLCommerz Store Id',
+                    'placeholder' => __('Store Id', 'SSLCOMMERZ'),
+                    'label' => __('Store Id', 'SSLCOMMERZ'),
+                    'inline_help' => __('Provide your SSLCommerz Store Id', 'SSLCOMMERZ'),
                     'check_status' => 'yes'
                 ],
                 [
                     'settings_key' => 'store_password',
                     'type' => 'input-text',
                     'data_type' => 'password',
-                    'placeholder' => 'Store Password',
-                    'label' => 'Store Password',
-                    'inline_help' => 'Provide your SSLCommerz Store Password',
+                    'placeholder' => __('Store Password', 'SSLCOMMERZ'),
+                    'label' => __('Store Password', 'SSLCOMMERZ'),
+                    'inline_help' => __('Provide your SSLCommerz Store Password', 'SSLCOMMERZ'),
                     'check_status' => 'yes'
                 ],
             ]
