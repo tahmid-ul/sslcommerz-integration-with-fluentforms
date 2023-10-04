@@ -13,7 +13,7 @@ class API
 	public function init()
 	{
 		// normal onetime payment process
-		add_action('fluentform_ipn_sslcommerz_action_paid', array($this, 'updatePaymentStatusFromIPN'), 10, 3);
+		add_action('fluentform/ipn_sslcommerz_action_paid', array($this, 'updatePaymentStatusFromIPN'), 10, 3);
 	}
 
     public function verifyIPN()
@@ -114,7 +114,7 @@ class API
             $status = 'paid';
         }
 
-        do_action('fluentform_ipn_sslcommerz_action_'.$status, $submission, $validateTransaction, $data);
+        do_action('fluentform/ipn_sslcommerz_action_'.$status, $submission, $validateTransaction, $data);
 
     }
 

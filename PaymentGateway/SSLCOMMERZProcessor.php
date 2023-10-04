@@ -21,22 +21,20 @@ class SSLCOMMERZProcessor extends BaseProcessor
 
     public function init() 
     {
-        add_action('fluentform_process_payment_' . $this->method, array($this, 'handlePaymentAction'), 10, 6);
-        add_action('fluent_payment_frameless_' . $this->method, array($this, 'handleSessionRedirectBack'));
+        add_action('fluentform/process_payment_' . $this->method, array($this, 'handlePaymentAction'), 10, 6);
+        add_action('fluentform/payment_frameless_' . $this->method, array($this, 'handleSessionRedirectBack'));
 
-        add_action('fluentform_ipn_endpoint_' . $this->method, function () {
+        add_action('fluentform/ipn_endpoint_' . $this->method, function () {
             (new API())->verifyIPN();
             exit(200);
         });
 
-        add_action('fluentform_ipn_sslcommerz_action_paid', array($this, 'handlePaid'), 10, 2);
-        //add_action('fluentform_ipn_sslcommerz_action_refunded', array($this, 'handleRefund'), 10, 3);
+        add_action('fluentform/ipn_sslcommerz_action_paid', array($this, 'handlePaid'), 10, 2);
+        //add_action('fluentform/ipn_sslcommerz_action_refunded', array($this, 'handleRefund'), 10, 3);
 
         add_filter('fluentform_submitted_payment_items_' . $this->method, [$this, 'validateSubmittedItems'], 10, 4);
 
         //add_action('fluentform_rendering_payment_method_' . $this->method, array($this, 'addCheckoutJs'), 10, 3);
-
-
 
         add_action('wp_ajax_fluentform_sslcommerz_confirm_payment', array($this, 'confirmModalPayment'));
         add_action('wp_ajax_nopriv_fluentform_sslcommerz_confirm_payment', array($this, 'confirmModalPayment'));

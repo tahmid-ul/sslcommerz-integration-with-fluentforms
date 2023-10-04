@@ -21,23 +21,29 @@ class SSLCOMMERZHandler extends BasePaymentMethod
 
     public function init()
     {
-        add_filter('fluentform_payment_settings_'.$this->key, function () {
+        add_filter('fluentform/payment_settings_'.$this->key, function () {
             return SSLCOMMERZSettings::getSettings();
         });
 
-        add_filter('fluentform_payment_method_settings_validation_'.$this->key, array($this, 'validateSettings'), 10, 2);
+        add_filter('fluentform/payment_method_settings_validation_'.$this->key, array($this, 'validateSettings'), 10, 2);
 
         if(!$this->isEnabled()) {
             return;
         }
 
-        add_filter('fluentform_transaction_data_' . $this->key, array($this, 'modifyTransaction'), 10, 1);
+        add_filter('fluentform/transaction_data_' . $this->key, array($this, 'modifyTransaction'), 10, 1);
 
-        add_filter('fluentformpro_available_payment_methods', [$this, 'pushPaymentMethodToForm']);
+        add_filter('fluentform/available_payment_methods', [$this, 'pushPaymentMethodToForm']);
+
 
 	    (new API())->init();
         (new SSLCOMMERZProcessor())->init();
     }
+
+	public function modifyTransaction($transaction)
+	{
+		return $transaction;
+	}
 
     public function pushPaymentMethodToForm($methods)
     {
